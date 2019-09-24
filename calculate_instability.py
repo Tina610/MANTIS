@@ -248,6 +248,7 @@ class CosineDissimilarity(Metric):
 
         n_mag = numpy.linalg.norm(n)
         t_mag = numpy.linalg.norm(t)
+### 得到tumor和normal的范数，上式是：矩阵整体元素平方和开根号，不保留矩阵二维特性
         n_dot_t = numpy.dot(n, t)
         if n_mag == 0.0 or t_mag == 0.0:
             # Can't calculate data with zero-magnitude vectors
@@ -255,6 +256,7 @@ class CosineDissimilarity(Metric):
 
         similarity = n_dot_t / (n_mag * t_mag)
         dist = 1 - similarity
+####相似性：矩阵积/范数积
         return dist
         # end CosineDissimilarity.get()
     # end CosineDissimilarity class definition
@@ -442,9 +444,13 @@ if __name__ == "__main__":
         # Calculate post-normalization metrics
         locus.normalize()
         difference = Difference.get(locus)
+        ###tumor和normal的每个位点的repeat counts占比（|tumor-normal|）总和；
         distance = EuclideanDistance.get(locus)
+        ###欧式距离？sqrt(normalize(tumor-normal)**2)
         dissimilarity = CosineDissimilarity.get(locus)
-
+        dissimilarity = CosineDissimilarity.get(locus)
+        ###tumor和normal相似性 
+        
         # Generate output line.
         line = '\t'.join([str(x) for x in [
             locus.locus(),
